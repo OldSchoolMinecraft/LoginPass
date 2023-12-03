@@ -22,7 +22,10 @@ public class PluginConfig extends Configuration
     public void write()
     {
         generateConfigOption("holderName", "You will set your Holder Name when you fill out the registration form. Enter that value here, and be EXACT.");
+        generateConfigOption("holderUUID", "This is your servers unique ID on our backend servers. This will be provided after you complete the form.");
         generateConfigOption("c2key", "Visit the MCLegacy server registration form to obtain a C2 key @ mclegacy.net/c2");
+        generateConfigOption("c2host", "0.0.0.0");
+        generateConfigOption("c2port", 12992);
 
         //TODO: configurable error messages
     }

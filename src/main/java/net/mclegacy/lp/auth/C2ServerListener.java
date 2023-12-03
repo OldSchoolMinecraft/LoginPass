@@ -1,6 +1,10 @@
 package net.mclegacy.lp.auth;
 
+import net.mclegacy.lp.LoginPass;
+
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -23,6 +27,7 @@ public class C2ServerListener extends Thread
         try
         {
             serverSocket = new ServerSocket();
+            serverSocket.bind(new InetSocketAddress(String.valueOf(LoginPass.getInstance().getConfig().getConfigOption("c2host")), 12992));
             running = true;
         } catch (IOException e) {
             e.printStackTrace(System.err);
