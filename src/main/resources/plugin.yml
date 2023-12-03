@@ -1,0 +1,7 @@
+name: LoginPass
+author: moderator_man
+version: 1.0
+main: net.mclegacy.lp.LoginPass
+commands:
+  mclink:
+    description: Link your in-game account to your MCLegacy account
