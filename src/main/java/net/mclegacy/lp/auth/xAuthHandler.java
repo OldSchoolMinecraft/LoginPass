@@ -1,7 +1,6 @@
 package net.mclegacy.lp.auth;
 
 import com.cypherx.xauth.xAuth;
-import net.mclegacy.plugin.MCLegacy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
