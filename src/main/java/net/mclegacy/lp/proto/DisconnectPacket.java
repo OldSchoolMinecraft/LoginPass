@@ -3,8 +3,9 @@ package net.mclegacy.lp.proto;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-public class DisconnectPacket extends DefaultPacket {
-    private String message;
+public class DisconnectPacket extends DefaultPacket
+{
+    public String message;
 
     public DisconnectPacket()
     {
@@ -38,5 +39,11 @@ public class DisconnectPacket extends DefaultPacket {
         } catch (Exception ex) {
             ex.printStackTrace(System.err);
         }
+    }
+
+    @Override
+    public void handlePacket(PacketHandler handler)
+    {
+        handler.handleDisconnectPacket(this);
     }
 }

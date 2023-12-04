@@ -5,3 +5,5 @@ main: net.mclegacy.lp.LoginPass
 commands:
   mclink:
     description: Link your in-game account to your MCLegacy account
+dependencies:
+  - 'com.squareup.okhttp3:okhttp:5.0.0-alpha.11'

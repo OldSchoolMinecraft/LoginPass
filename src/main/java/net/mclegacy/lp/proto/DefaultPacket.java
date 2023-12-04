@@ -41,4 +41,9 @@ public abstract class DefaultPacket extends AbstractPacket
             ex.printStackTrace(System.err);
         }
     }
+
+    public void handlePacket(PacketHandler handler)
+    {
+        handler.handlePacket(this);
+    }
 }

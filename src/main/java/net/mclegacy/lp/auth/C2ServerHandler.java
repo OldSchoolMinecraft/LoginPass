@@ -1,6 +1,8 @@
 package net.mclegacy.lp.auth;
 
 import net.mclegacy.lp.proto.AbstractPacket;
+import net.mclegacy.lp.proto.AuthorizePacket;
+import net.mclegacy.lp.proto.PacketHandler;
 import net.mclegacy.lp.proto.PacketRegistry;
 
 import java.io.DataInputStream;
@@ -9,10 +11,11 @@ import java.net.Socket;
 
 public class C2ServerHandler extends Thread
 {
-    private Socket c2socket;
+    public Socket c2socket;
     private DataInputStream dis;
     private DataOutputStream dos;
     private boolean running = false;
+    private final PacketHandler packetHandler = new PacketHandler();
 
     public C2ServerHandler(Socket c2socket)
     {
@@ -50,6 +53,7 @@ public class C2ServerHandler extends Thread
                 AbstractPacket packet = packetClass.getConstructor().newInstance(packetID);
                 packet.setC2Handler(this);
                 packet.readData(dis);
+                packet.handlePacket(packetHandler);
             } catch (Exception ex) {
                 ex.printStackTrace(System.err);
                 end();

@@ -8,5 +8,8 @@ repositories {
 
 dependencies {
     implementation(files("libs/poseidon.jar"))
+    implementation(files("libs/OSAS.jar"))
+    implementation(files("libs/xAuth.jar"))
+    implementation(files("libs/AuthMe.jar"))
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '5.0.0-alpha.11'
 }

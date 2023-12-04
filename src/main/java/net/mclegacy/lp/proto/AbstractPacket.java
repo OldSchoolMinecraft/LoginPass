@@ -7,7 +7,7 @@ import java.io.DataOutputStream;
 
 public abstract class AbstractPacket
 {
-    protected int packetID;
+    public int packetID;
     protected String c2key;
     protected boolean keyRequired;
     protected C2ServerHandler c2handler;
@@ -31,4 +31,6 @@ public abstract class AbstractPacket
     public abstract void readData(DataInputStream dis);
 
     public abstract void writeData(DataOutputStream dos);
+
+    public abstract void handlePacket(PacketHandler handler);
 }

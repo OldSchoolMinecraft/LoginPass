@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class AuthorizePacket extends DefaultPacket
 {
-    private String username;
+    public String username;
 
     public AuthorizePacket(String username)
     {
@@ -41,5 +41,11 @@ public class AuthorizePacket extends DefaultPacket
         } catch (Exception ex) {
             ex.printStackTrace(System.err);
         }
+    }
+
+    @Override
+    public void handlePacket(PacketHandler handler)
+    {
+        handler.handleAuthorizePacket(this);
     }
 }
