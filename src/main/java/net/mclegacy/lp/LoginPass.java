@@ -53,7 +53,7 @@ public class LoginPass extends JavaPlugin
         PacketRegistry.registerPacket(99, DisconnectPacket.class);
         PacketRegistry.registerPacket(111, ErrorPacket.class);
 
-        c2listener = new C2ServerListener();
+        c2listener = new C2ServerListener(config.getInt("c2port", 12992));
         c2listener.start();
 
         UpstreamAPI.pingTracker(); // initial ping on startup
@@ -64,7 +64,7 @@ public class LoginPass extends JavaPlugin
 
     public void onDisable()
     {
-        c2listener.end();
+        c2listener.stopServer();
 
         System.out.println("LoginPass disabled");
     }

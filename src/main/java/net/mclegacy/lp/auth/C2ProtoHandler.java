@@ -3,9 +3,12 @@ package net.mclegacy.lp.auth;
 import net.mclegacy.lp.LoginPass;
 import net.mclegacy.lp.proto.PacketHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -20,12 +23,14 @@ public class C2ProtoHandler extends Thread
         this.socket = socket;
     }
 
-    public void start()
+    public void init()
     {
         try
         {
             this.dis = new DataInputStream(socket.getInputStream());
             this.dos = new DataOutputStream(socket.getOutputStream());
+
+            start();
         } catch (IOException e) {
             e.printStackTrace(System.err);
         }
@@ -33,7 +38,7 @@ public class C2ProtoHandler extends Thread
 
     public void run()
     {
-        System.out.println("[LoginPass] C2 proto handler started: " + socket);
+        System.out.println("[LoginPass] C2 proto handler started: " + socket.getInetAddress());
         while (socket.isConnected() && !socket.isClosed())
         {
             try {
@@ -44,11 +49,13 @@ public class C2ProtoHandler extends Thread
                     String username = parts[1];
                     String key = parts[2];
 
-                    if (Bukkit.getOfflinePlayer(username).isOnline() && key.equals(LoginPass.getInstance().getConfig().getConfigOption("c2key"))) {
+                    OfflinePlayer player = Bukkit.getOfflinePlayer(username);
+                    if (player.isOnline() && key.equals(LoginPass.getInstance().getConfig().getConfigOption("c2key"))) {
                         AuthPluginHandler handler = selectAuthPlugin();
                         handler.authenticate(username, socket.getInetAddress().getHostAddress());
-                        System.out.println("[LoginPass] " + username + " was authenticated via C2 (" + socket + ")");
+                        System.out.println("[LoginPass] " + username + " was authenticated via C2 (" + socket.getInetAddress() + ")");
                         dos.writeUTF("SUCCESS Authorized");
+                        Bukkit.getPlayer(username).sendMessage(ChatColor.GREEN + "You have been authorized via " + ChatColor.BLUE + "MCLegacy");
                     } else {
                         dos.writeUTF("ERROR Invalid key or player is not online");
                     }
@@ -59,11 +66,12 @@ public class C2ProtoHandler extends Thread
                 } catch (IOException e) {
                     e.printStackTrace(System.err);
                 }
-            } catch (Exception ex) {
+            } catch (EOFException ignored) {}
+            catch (Exception ex) {
                 ex.printStackTrace(System.err);
             }
         }
-        System.out.println("[LoginPass] C2 proto handler stopped: " + socket);
+        System.out.println("[LoginPass] C2 proto handler stopped: " + socket.getInetAddress());
     }
 
     private AuthPluginHandler selectAuthPlugin()

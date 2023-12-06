@@ -63,7 +63,7 @@ public class UpstreamAPI
         ArrayList<String> playersArray = new ArrayList<>();
         for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers())
             playersArray.add((onlinePlayer.getName()));
-        req.add("onlinePlayers", gson.toJsonTree(playersArray));
+        req.add("players", gson.toJsonTree(playersArray));
 
         String rawreq = gson.toJson(req);
         if (debugMode) System.out.println("Raw request: " + rawreq);
