@@ -2,7 +2,9 @@
 
 ## What does it do?
 
-Bypass /login on your server via [MCLegacy](https://mclegacy.net/auth). Once players link their account, they only have to press one button to authenticate themselves and play!
+Bypass /login on your server.
+
+Once players link their account, they only have to press one button on [MCLegacy](https://mclegacy.net/auth) to authenticate themselves and play!
 
 ## Supported Authentication Plugins
 - AuthMe
