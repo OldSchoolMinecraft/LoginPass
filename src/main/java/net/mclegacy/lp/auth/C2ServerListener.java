@@ -13,14 +13,11 @@ public class C2ServerListener extends Thread
 {
     private boolean running = true;
     private ServerSocket serverSocket;
-    private final ArrayList<C2ServerHandler> c2connections;
     private static final boolean debugMode = (boolean) LoginPass.getInstance().getConfig().getConfigOption("debugMode");
 
     public C2ServerListener()
     {
         super("C2ServerListener");
-
-        c2connections = new ArrayList<>();
     }
 
     public void start()
@@ -48,10 +45,11 @@ public class C2ServerListener extends Thread
                 Socket c2socket = serverSocket.accept();
                 if (c2socket == null) continue;
                 System.out.println("[LoginPass] C2 connection: " + c2socket);
-                C2ServerHandler handler = new C2ServerHandler(c2socket);
+                C2ProtoHandler handler = new C2ProtoHandler(c2socket);
                 handler.start();
-                c2connections.add(handler);
-            } catch (Exception ignored) {}
+            } catch (Exception ex) {
+                ex.printStackTrace(System.err);
+            }
         }
 
         if (debugMode) System.out.println("[LoginPass] C2 server listener has stopped");
@@ -60,7 +58,5 @@ public class C2ServerListener extends Thread
     public void end()
     {
         running = false;
-        c2connections.forEach(C2ServerHandler::end);
-        c2connections.clear();
     }
 }
