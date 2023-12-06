@@ -22,7 +22,8 @@ public abstract class DefaultPacket extends AbstractPacket
                 c2key = dis.readUTF();
                 if (!c2key.equals(LoginPass.getInstance().getConfig().getConfigOption("c2key")))
                 {
-                    c2handler.sendPacket(new DisconnectPacket("Invalid C2 key"));
+                    c2handler.sendPacket(new ErrorPacket("Invalid C2 key"));
+                    c2handler.sendPacket(new DisconnectPacket("Bye"));
                     c2handler.end();
                 }
             }

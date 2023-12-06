@@ -5,6 +5,7 @@ import net.mclegacy.lp.proto.*;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -41,8 +42,7 @@ public class C2ServerHandler extends Thread
     {
         while (running)
         {
-            try
-            {
+            try {
                 int packetID = dis.readInt();
                 if (debugMode) System.out.println("[LoginPass] C2 received packet: " + packetID);
                 Class<? extends AbstractPacket> packetClass = PacketRegistry.getPacketClass(packetID);
@@ -51,7 +51,8 @@ public class C2ServerHandler extends Thread
                 packet.setC2Handler(this);
                 packet.readData(dis);
                 packet.handlePacket(packetHandler);
-            } catch (Exception ex) {
+            } catch (EOFException ignored) {}
+            catch (Exception ex) {
                 ex.printStackTrace(System.err);
                 sendPacket(new ErrorPacket(ex.getMessage()));
                 end();

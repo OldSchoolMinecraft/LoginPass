@@ -3,6 +3,9 @@ package net.mclegacy.lp.proto;
 import net.mclegacy.lp.LoginPass;
 import net.mclegacy.lp.auth.AuthHandlerException;
 import net.mclegacy.lp.auth.AuthPluginHandler;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 public class PacketHandler
 {
@@ -34,9 +37,16 @@ public class PacketHandler
         {
             try
             {
+                Player player = Bukkit.getPlayer(packet.username);
+                if (player == null)
+                {
+                    packet.c2handler.sendPacket(new ErrorPacket("Player is not online."));
+                    return;
+                }
                 AuthPluginHandler handler = selectAuthPlugin();
                 handler.authenticate(packet.username, packet.c2handler.c2socket.getInetAddress().getHostAddress());
                 System.out.println("[LoginPass] " + packet.username + " was authenticated via C2 (" + packet.c2handler.c2socket + ")");
+                player.sendMessage(ChatColor.GREEN + "You have been authorized via " + ChatColor.BLUE + "MCLegacy!");
             } catch (AuthHandlerException e) {
                 throw new RuntimeException(e);
             }
