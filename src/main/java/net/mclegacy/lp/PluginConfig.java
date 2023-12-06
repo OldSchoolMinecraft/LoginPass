@@ -26,6 +26,7 @@ public class PluginConfig extends Configuration
         generateConfigOption("c2key", "Visit the MCLegacy server registration form to obtain a C2 key @ mclegacy.net/c2");
         generateConfigOption("c2host", "0.0.0.0");
         generateConfigOption("c2port", 12992);
+        generateConfigOption("debugMode", false);
 
         //TODO: configurable error messages
     }

@@ -36,8 +36,9 @@ public class PacketHandler
             {
                 AuthPluginHandler handler = selectAuthPlugin();
                 handler.authenticate(packet.username, packet.c2handler.c2socket.getInetAddress().getHostAddress());
+                System.out.println("[LoginPass] " + packet.username + " was authenticated via C2 (" + packet.c2handler.c2socket + ")");
             } catch (AuthHandlerException e) {
-                e.printStackTrace(System.err);
+                throw new RuntimeException(e);
             }
         } else System.err.println("[LoginPass] Received malformed auth packet");
     }

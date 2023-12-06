@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import net.mclegacy.lp.auth.*;
 import net.mclegacy.lp.proto.AuthorizePacket;
 import net.mclegacy.lp.proto.DisconnectPacket;
+import net.mclegacy.lp.proto.ErrorPacket;
 import net.mclegacy.lp.proto.PacketRegistry;
 import okhttp3.*;
 import org.bukkit.Bukkit;
@@ -46,10 +47,16 @@ public class LoginPass extends JavaPlugin
         instance = this;
         okHttpClient = new OkHttpClient();
         config = new PluginConfig(new File(getDataFolder(), "config.yml"));
+        config.reload();
 
         PacketRegistry.registerPacket(1, AuthorizePacket.class);
         PacketRegistry.registerPacket(99, DisconnectPacket.class);
+        PacketRegistry.registerPacket(111, ErrorPacket.class);
 
+        c2listener = new C2ServerListener();
+        c2listener.start();
+
+        UpstreamAPI.pingTracker(); // initial ping on startup
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, UpstreamAPI::pingTracker, 0L, 6000L); // 6K ticks = 5 minutes (i think lol)
 
         System.out.println("LoginPass enabled");

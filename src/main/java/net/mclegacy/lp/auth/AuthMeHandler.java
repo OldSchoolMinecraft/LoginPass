@@ -10,20 +10,21 @@ import java.lang.reflect.Field;
 
 public class AuthMeHandler implements AuthPluginHandler
 {
-    private final AuthMe authMe;
+    private AuthMe authMe;
     private DataSource database;
 
     public AuthMeHandler()
     {
-        authMe = (AuthMe) Bukkit.getPluginManager().getPlugin("AuthMe");
+
         try
         {
+            authMe = (AuthMe) Bukkit.getPluginManager().getPlugin("AuthMe");
+            if (authMe == null) return; // not installed, do not continue
             Field field = authMe.getClass().getDeclaredField("database");
             field.setAccessible(true);
             database = (DataSource) field.get(authMe);
         } catch (Exception ex) {
             System.err.println("[LoginPass] Failed to access AuthMe database");
-            ex.printStackTrace(System.err);
         }
     }
 
