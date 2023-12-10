@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 
 public class LinkCommand implements CommandExecutor
 {
+    private static final PluginConfig config = LoginPass.getInstance().getConfig();
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
@@ -39,9 +41,9 @@ public class LinkCommand implements CommandExecutor
                         UpstreamAPI.validateLinkCode(name, code);
 
                         // if the above code does throw an exception, this should not run
-                        sender.sendMessage(ChatColor.GREEN + "Successfully linked your account!");
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.valueOf(config.getConfigOption("messages.linkSuccess"))));
                     } catch (LinkException ex) {
-                        sender.sendMessage("Link failed: " + ChatColor.RED + ex.getMessage());
+                        sender.sendMessage(ChatColor.RED + "Link failed: " + ex.getMessage());
                     }
                 } catch (NumberFormatException ex) {
                     sender.sendMessage(ChatColor.RED + "Link code must contain integers only, ex: 1234");

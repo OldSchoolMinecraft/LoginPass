@@ -28,7 +28,8 @@ public class PluginConfig extends Configuration
         generateConfigOption("c2port", 12992);
         generateConfigOption("debugMode", false);
 
-        //TODO: configurable error messages
+        generateConfigOption("messages.authenticated", "&aYou have been authorized via &bMCLegacy!");
+        generateConfigOption("messages.linkSuccess", "&aYour account has been linked successfully!");
     }
 
     private void generateConfigOption(String key, Object defaultValue)
