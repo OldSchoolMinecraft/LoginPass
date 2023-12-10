@@ -4,18 +4,14 @@ import net.mclegacy.lp.ex.LinkException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class LinkCommand extends Command
+public class LinkCommand implements CommandExecutor
 {
-    protected LinkCommand()
-    {
-        super("MCLink");
-    }
-
     @Override
-    public boolean execute(CommandSender sender, String label, String[] args)
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
         if (label.equalsIgnoreCase("mclink"))
         {
@@ -27,7 +23,7 @@ public class LinkCommand extends Command
 
             if (args.length != 1)
             {
-                sender.sendMessage(ChatColor.RED + "Insufficient arguments. Usage: /link <code>");
+                sender.sendMessage(ChatColor.RED + "Insufficient arguments. Usage: /mclink <code>");
                 return true;
             }
 
@@ -43,9 +39,9 @@ public class LinkCommand extends Command
                         UpstreamAPI.validateLinkCode(name, code);
 
                         // if the above code does throw an exception, this should not run
-
+                        sender.sendMessage(ChatColor.GREEN + "Successfully linked your account!");
                     } catch (LinkException ex) {
-                        sender.sendMessage(ChatColor.RED + ex.getMessage());
+                        sender.sendMessage("Link failed: " + ChatColor.RED + ex.getMessage());
                     }
                 } catch (NumberFormatException ex) {
                     sender.sendMessage(ChatColor.RED + "Link code must contain integers only, ex: 1234");

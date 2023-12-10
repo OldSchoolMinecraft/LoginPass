@@ -10,6 +10,7 @@ import net.mclegacy.lp.proto.ErrorPacket;
 import net.mclegacy.lp.proto.PacketRegistry;
 import okhttp3.*;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -55,6 +56,8 @@ public class LoginPass extends JavaPlugin
 
         c2listener = new C2ServerListener(config.getInt("c2port", 12992));
         c2listener.start();
+
+        getCommand("mclink").setExecutor(new LinkCommand());
 
         UpstreamAPI.pingTracker(); // initial ping on startup
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, UpstreamAPI::pingTracker, 0L, 6000L); // 6K ticks = 5 minutes (i think lol)
