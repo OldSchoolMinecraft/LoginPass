@@ -1,8 +1,6 @@
 package net.mclegacy.lp;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import net.mclegacy.lp.auth.*;
 import net.mclegacy.lp.proto.AuthorizePacket;
 import net.mclegacy.lp.proto.DisconnectPacket;
@@ -10,12 +8,9 @@ import net.mclegacy.lp.proto.ErrorPacket;
 import net.mclegacy.lp.proto.PacketRegistry;
 import okhttp3.*;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 

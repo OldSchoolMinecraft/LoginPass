@@ -3,7 +3,6 @@ package net.mclegacy.lp;
 import org.bukkit.util.config.Configuration;
 
 import java.io.File;
-import java.util.UUID;
 
 public class PluginConfig extends Configuration
 {

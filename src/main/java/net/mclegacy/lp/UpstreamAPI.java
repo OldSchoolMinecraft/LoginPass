@@ -58,7 +58,7 @@ public class UpstreamAPI
 //        req.addProperty("holderUUID", holderUUID);
         req.addProperty("c2", c2host + ":" + c2port);
         req.addProperty("maxPlayerCount", Bukkit.getServer().getMaxPlayers());
-        if (iconFile.exists())
+        if (iconFile.exists() && shouldUpdateIconInNextPing)
             req.addProperty("serverIcon", Util.encodeFileToBase64(iconFile.getAbsolutePath()));
         ArrayList<String> playersArray = new ArrayList<>();
         for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers())
@@ -86,8 +86,8 @@ public class UpstreamAPI
                 return;
             }
             if (!res.success) System.out.println("[LoginPass] Failed to announce to MCLegacy server list, status: " + response.code());
-            else if (res.iconAlreadyCached) {
-                iconAlreadyCached = true;
+            else {
+                iconAlreadyCached = res.iconAlreadyCached;
                 serverIconSHA1 = res.iconHash;
                 String localSHA1 = Util.calculateFileSHA1(iconFile.getAbsolutePath());
                 shouldUpdateIconInNextPing = serverIconSHA1.length() < 20 || !serverIconSHA1.equals(localSHA1);
