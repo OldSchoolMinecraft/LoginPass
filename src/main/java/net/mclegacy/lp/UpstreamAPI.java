@@ -55,7 +55,7 @@ public class UpstreamAPI
 
         JsonObject req = new JsonObject();
         req.addProperty("holderName", holderName);
-//        req.addProperty("holderUUID", holderUUID);
+        req.addProperty("holderUUID", holderUUID);
         req.addProperty("c2", c2host + ":" + c2port);
         req.addProperty("maxPlayerCount", Bukkit.getServer().getMaxPlayers());
         if (iconFile.exists() && shouldUpdateIconInNextPing)
