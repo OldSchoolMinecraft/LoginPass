@@ -5,6 +5,7 @@ import net.mclegacy.lp.auth.AuthHandlerException;
 import net.mclegacy.lp.auth.AuthPluginHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class PacketHandler
@@ -40,7 +41,13 @@ public class PacketHandler
                 Player player = Bukkit.getPlayer(packet.username);
                 if (player == null)
                 {
-                    packet.c2handler.sendPacket(new ErrorPacket("Player is not online."));
+                    packet.c2handler.sendPacket(new ErrorPacket("Player is not online"));
+                    return;
+                }
+                String playerIP = ((CraftPlayer) player).getHandle().netServerHandler.networkManager.socket.getInetAddress().getHostAddress();
+                if (!playerIP.equals(packet.originalIP))
+                {
+                    packet.c2handler.sendPacket(new ErrorPacket("IP mismatch"));
                     return;
                 }
                 AuthPluginHandler handler = selectAuthPlugin();

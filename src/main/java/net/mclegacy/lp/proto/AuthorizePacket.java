@@ -7,11 +7,13 @@ import java.io.IOException;
 public class AuthorizePacket extends DefaultPacket
 {
     public String username;
+    public String originalIP;
 
-    public AuthorizePacket(String username)
+    public AuthorizePacket(String username, String originalIP)
     {
         super(1);
         this.username = username;
+        this.originalIP = originalIP;
     }
 
     public AuthorizePacket()
@@ -26,6 +28,7 @@ public class AuthorizePacket extends DefaultPacket
         {
             super.readData(dis);
             this.username = dis.readUTF();
+            this.originalIP = dis.readUTF();
         } catch (IOException e) {
             e.printStackTrace(System.err);
         }
@@ -38,6 +41,7 @@ public class AuthorizePacket extends DefaultPacket
         {
             super.writeData(dos);
             dos.writeUTF(username);
+            dos.writeUTF(originalIP);
         } catch (Exception ex) {
             ex.printStackTrace(System.err);
         }
